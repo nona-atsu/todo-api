@@ -1,5 +1,5 @@
 import express from 'express';
-import todoController from './controller/todo-controller'
+import todoController from './controller/getTodoController'
 
 const app = express();
 const port = 3000;
