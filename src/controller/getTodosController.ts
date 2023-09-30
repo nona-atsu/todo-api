@@ -16,16 +16,4 @@ router.get('/',
     });
 });
 
-//get todos with params
-router.get('/params',
-    (req: Request, res: Response) => {
-    connection.query(`SELECT * FROM todos WHERE title LIKE '%${req.query.title}%'`, (err: string, results: TodoType[]) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        res.send(results);
-    });
-});
-
 export default router;
