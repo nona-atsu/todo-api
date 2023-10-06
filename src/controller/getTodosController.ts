@@ -7,12 +7,23 @@ const router: Router = express.Router();
 //get all todos
 router.get('/',
     (req: Request, res: Response) => {
-    connection.query('SELECT * FROM `todos` ORDER BY ID', (err: string, results: TodoType[]) => {
+    connection.query('SELECT id, title, content, start_date as startDate, end_date as endDate, due_date as dueDate FROM `todos` ORDER BY ID',
+    (err: string, results: TodoType[]) => {
         if (err) {
             console.log(err);
             return;
         }
-        res.send(results);
+        const response = results.map((todo: TodoType) => {
+            return {
+                id: todo.id,
+                title: todo.title,
+                content: todo.content,
+                startDate: todo.startDate,
+                endDate: todo.endDate,
+                dueDate: todo.dueDate,
+            };
+        });
+        res.send(response);
     });
 });
 

@@ -15,7 +15,14 @@ router.put('/:id',
         body('endDate').isISO8601().withMessage('Please enter yyyy-MM-dd.'),
         body('endDate').custom((value, { req }) => {
             const endDate = new Date(value);
-            const startDate = new Date(req.body.startDate);
+            let startDate = req.body.startDate === null ? new Date() : new Date(req.body.startDate);
+            connection.query(`SELECT start_date as startDate FROM todos WHERE id=${req.body.id}`, (err: string, results: TodoType[]) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                startDate = new Date(results[0].startDate);
+            });
             if (endDate.getTime() <= startDate.getTime()) {
                 throw new Error("Please enter date after startDate");
             }
@@ -24,7 +31,14 @@ router.put('/:id',
         body('dueDate').isISO8601().withMessage('Please enter yyyy-MM-dd.'),
         body('dueDate').custom((value, { req }) => {
             const dueDate = new Date(value);
-            const startDate = new Date(req.body.startDate);
+            let startDate = req.body.startDate === null ? new Date() : new Date(req.body.startDate);
+            connection.query(`SELECT start_date as startDate FROM todos WHERE id=${req.body.id}`, (err: string, results: TodoType[]) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+                startDate = new Date(results[0].startDate);
+            });
             if (dueDate.getTime() <= startDate.getTime()) {
                 throw new Error("Please enter date after startDate");
             }
